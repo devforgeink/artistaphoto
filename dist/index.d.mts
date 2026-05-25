@@ -1,4 +1,4 @@
-type OperationType = 'crop' | 'resize' | 'filter' | 'adjustment' | 'text' | 'shape';
+type OperationType = 'crop' | 'resize' | 'filter' | 'adjustment' | 'text' | 'shape' | 'rotate' | 'flip';
 interface OperationParams {
     [key: string]: any;
 }
@@ -68,6 +68,13 @@ interface ShapeParams extends Required<Omit<ShapeOptions, 'fill' | 'stroke'>> {
         color: string;
         width: number;
     };
+}
+interface RotateOptions {
+    angle: number;
+}
+type FlipDirection = 'horizontal' | 'vertical';
+interface FlipOptions {
+    direction: FlipDirection;
 }
 
 type FilterType = 'grayscale' | 'sepia' | 'blur' | 'sharpen' | 'vintage' | 'invert' | 'vignette' | 'posterize' | 'pixelate' | 'edgeDetection';
@@ -300,8 +307,12 @@ declare class ArtistAPhoto {
      * @throws LicenseError if no valid license is set
      */
     static fromImageElement(img: HTMLImageElement): Promise<ArtistAPhoto>;
+    private getCurrentDimensions;
     crop(options: CropOptions): this;
     resize(width: number, height: number, options?: ResizeOptions): this;
+    rotate(angle: number): this;
+    flipHorizontal(): this;
+    flipVertical(): this;
     addText(options: TextOptions): this;
     addShape(options: ShapeOptions): this;
     filter(type: FilterType, intensity?: number): this;
@@ -343,28 +354,6 @@ declare class CanvasContextError extends ArtistAPhotoError {
     constructor(message?: string);
 }
 
-interface WorkerTask {
-    type: string;
-    imageData: ImageData;
-    params?: any;
-}
-interface WorkerResponse {
-    result: ImageData;
-    error?: string;
-}
-declare class WorkerPool {
-    private workers;
-    private availableWorkers;
-    private maxWorkers;
-    private workerUrl;
-    constructor(maxWorkers?: number);
-    private createWorker;
-    private getAvailableWorker;
-    private releaseWorker;
-    execute<T = WorkerResponse>(task: WorkerTask): Promise<T>;
-    terminate(): void;
-}
-
 declare function createEditor(source: string | File | HTMLImageElement | HTMLCanvasElement): Promise<ArtistAPhoto>;
 
-export { type AdjustmentParams, type AdjustmentType, ArtistAPhoto, ArtistAPhotoError, CanvasContextError, type CropOptions, ExportError, type ExportFormat, type ExportOptions, type FilterParams, type FilterType, ImageLoadError, type ImageMetadata, InvalidCropError, InvalidDimensionsError, type LicenseConfig, LicenseError, type LicenseInfo, type LicenseStatus, type LicenseValidationResult, type OperationType, type ResizeOptions, type ShapeOptions, type ShapeParams, type ShapeType, type TextOptions, type TextParams, WorkerPool, type WorkerResponse, type WorkerTask, createEditor };
+export { type AdjustmentParams, type AdjustmentType, ArtistAPhoto, ArtistAPhotoError, CanvasContextError, type CropOptions, ExportError, type ExportFormat, type ExportOptions, type FilterParams, type FilterType, type FlipDirection, type FlipOptions, ImageLoadError, type ImageMetadata, InvalidCropError, InvalidDimensionsError, type LicenseConfig, LicenseError, type LicenseInfo, type LicenseStatus, type LicenseValidationResult, type OperationType, type ResizeOptions, type RotateOptions, type ShapeOptions, type ShapeParams, type ShapeType, type TextOptions, type TextParams, createEditor };

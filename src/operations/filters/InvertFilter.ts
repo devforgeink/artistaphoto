@@ -2,11 +2,15 @@ import { FilterOperation } from './FilterOperation';
 import type { FilterParams } from '../../types';
 
 export class InvertFilter extends FilterOperation {
-  readonly params: FilterParams = { filterType: 'invert' };
+  readonly params: FilterParams;
 
   constructor(intensity: number = 1.0) {
     super(intensity);
     this.params = { filterType: 'invert', intensity: this.intensity };
+  }
+
+  protected getNativeFilter(): string {
+    return `invert(${this.intensity})`;
   }
 
   protected applyFilter(data: Uint8ClampedArray): void {

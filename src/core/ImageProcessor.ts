@@ -5,6 +5,8 @@ import type { Operation } from '../operations/base/Operation';
 export class ImageProcessor {
   private canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
+  private cachedImageData: ImageData | null = null;
+  private cachedOps: ReadonlyArray<Operation> = [];
 
   constructor() {
     this.canvas = createCanvas(1, 1);
@@ -15,17 +17,37 @@ export class ImageProcessor {
     state: ImageState,
     operations: ReadonlyArray<Operation>
   ): Promise<HTMLCanvasElement> {
-    // Set up canvas with original image
-    this.canvas.width = state.width;
-    this.canvas.height = state.height;
-    this.ctx.drawImage(state.originalImage, 0, 0);
+    let startIndex = 0;
 
-    // Apply operations sequentially
-    for (const operation of operations) {
-      await operation.apply(this.canvas, this.ctx);
+    if (this.cachedImageData && this.cachedOps.length <= operations.length) {
+      const isPrefix = this.cachedOps.every((op, i) => operations[i] === op);
+      if (isPrefix && this.cachedOps.length > 0) {
+        startIndex = this.cachedOps.length;
+        this.canvas.width = this.cachedImageData.width;
+        this.canvas.height = this.cachedImageData.height;
+        this.ctx.putImageData(this.cachedImageData, 0, 0);
+      }
     }
 
+    if (startIndex === 0) {
+      this.canvas.width = state.width;
+      this.canvas.height = state.height;
+      this.ctx.drawImage(state.originalImage, 0, 0);
+    }
+
+    for (let i = startIndex; i < operations.length; i++) {
+      await operations[i].apply(this.canvas, this.ctx);
+    }
+
+    this.cachedImageData = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
+    this.cachedOps = operations.slice();
+
     return this.canvas;
+  }
+
+  invalidateCache(): void {
+    this.cachedImageData = null;
+    this.cachedOps = [];
   }
 
   getCanvas(): HTMLCanvasElement {

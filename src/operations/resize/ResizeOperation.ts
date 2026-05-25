@@ -17,7 +17,7 @@ export class ResizeOperation extends BaseOperation {
   }
 
   async apply(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D): Promise<void> {
-    const { width, height, quality } = this.params;
+    const { width, height, quality, maintainAspectRatio } = this.params;
 
     // Store current image
     const currentImage = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -25,16 +25,30 @@ export class ResizeOperation extends BaseOperation {
     const tempCtx = getContext2D(tempCanvas);
     tempCtx.putImageData(currentImage, 0, 0);
 
+    let finalWidth = width;
+    let finalHeight = height;
+
+    if (maintainAspectRatio) {
+      const srcRatio = canvas.width / canvas.height;
+      const dstRatio = width / height;
+
+      if (srcRatio > dstRatio) {
+        finalHeight = Math.round(width / srcRatio);
+      } else {
+        finalWidth = Math.round(height * srcRatio);
+      }
+    }
+
     // Resize canvas
-    canvas.width = width;
-    canvas.height = height;
+    canvas.width = finalWidth;
+    canvas.height = finalHeight;
 
     // Set image smoothing based on quality
     ctx.imageSmoothingEnabled = quality === 'high' || quality === 'medium';
     ctx.imageSmoothingQuality = quality === 'high' ? 'high' : quality === 'medium' ? 'medium' : 'low';
 
     // Draw resized image
-    ctx.drawImage(tempCanvas, 0, 0, width, height);
+    ctx.drawImage(tempCanvas, 0, 0, finalWidth, finalHeight);
   }
 
   validate(): boolean {

@@ -1,4 +1,4 @@
-export type OperationType = 'crop' | 'resize' | 'filter' | 'adjustment' | 'text' | 'shape';
+export type OperationType = 'crop' | 'resize' | 'filter' | 'adjustment' | 'text' | 'shape' | 'rotate' | 'flip';
 
 export interface OperationParams {
   [key: string]: any;
@@ -83,4 +83,22 @@ export interface ShapeParams extends Required<Omit<ShapeOptions, 'fill' | 'strok
     color: string;
     width: number;
   };
+}
+
+export interface RotateOptions {
+  angle: number;
+}
+
+export interface RotateParams {
+  angle: number;
+}
+
+export type FlipDirection = 'horizontal' | 'vertical';
+
+export interface FlipOptions {
+  direction: FlipDirection;
+}
+
+export interface FlipParams {
+  direction: FlipDirection;
 }

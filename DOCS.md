@@ -34,10 +34,10 @@ ArtistAPhoto is a powerful browser-based image editing SDK that provides a compl
 
 - **10 Professional Filters** - Grayscale, sepia, blur, sharpen, vintage, invert, vignette, posterize, pixelate, edge detection
 - **5 Image Adjustments** - Brightness, contrast, saturation, exposure, temperature
-- **Transformations** - Crop, resize with quality control
+- **Transformations** - Crop, resize, rotate, flip
 - **Overlays** - Text with full styling, shapes (rectangles, ellipses)
 - **Non-destructive Editing** - Original image preserved, full undo/redo
-- **High Performance** - Web Workers for heavy operations
+- **High Performance** - Native canvas filter acceleration with incremental state caching
 - **TypeScript Ready** - Full type definitions included
 - **Multiple Export Formats** - JPEG, PNG, WebP
 
@@ -1106,16 +1106,17 @@ async function processImage(file: File): Promise<Blob> {
 
 ArtistAPhoto is optimized for performance in browser environments.
 
-### Web Workers
+### Native Canvas Filters
 
-Heavy operations automatically use Web Workers to avoid blocking the main thread:
+Where supported, ArtistAPhoto uses native CSS canvas filters (`ctx.filter`) for hardware-accelerated processing:
 
-- Blur filter
-- Sharpen filter
-- Edge detection filter
-- Pixelate filter
+- Grayscale, sepia, invert, blur
 
-This keeps the UI responsive even when processing large images.
+These run orders of magnitude faster than pixel-by-pixel JavaScript. Filters without native equivalents (sharpen, vintage, vignette, posterize, pixelate, edge detection) use optimized pixel manipulation with automatic fallback.
+
+### Incremental State Caching
+
+The rendering pipeline caches intermediate states. When you add a new operation, only the new operation is applied — previous operations are not re-rendered. This makes interactive editing (adjusting sliders, adding filters) fast even with many operations in the history.
 
 ### Best Practices
 
@@ -1183,7 +1184,7 @@ Use `toBlob()`/`toDataURL()` only for final export.
 
 ### Optional APIs
 
-- Web Workers (enhanced performance)
+- CSS Canvas Filters (enhanced performance, auto-fallback)
 - localStorage (license caching)
 
 ### Checking Support
@@ -1295,7 +1296,7 @@ const editor = await ArtistAPhoto.fromFile(file);
 **Solutions:**
 1. Resize image to smaller dimensions first
 2. Use lower intensity values
-3. Ensure Web Workers are supported (check console for errors)
+3. Chain operations before calling preview (leverages state caching)
 4. Avoid applying heavy filters multiple times
 
 ### Watermark appears even with license

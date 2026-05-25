@@ -18,6 +18,9 @@ export type {
   ShapeType,
   ShapeOptions,
   ShapeParams,
+  RotateOptions,
+  FlipDirection,
+  FlipOptions,
   // License types
   LicenseStatus,
   LicenseInfo,
@@ -34,10 +37,6 @@ export {
   ExportError,
   CanvasContextError,
 } from './errors/ArtistAPhotoError';
-
-// Export worker pool for advanced usage
-export { WorkerPool } from './workers/workerPool';
-export type { WorkerTask, WorkerResponse } from './workers/workerPool';
 
 // Convenience factory function
 export async function createEditor(

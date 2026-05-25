@@ -9,6 +9,11 @@ export type {
   ShapeType,
   ShapeOptions,
   ShapeParams,
+  RotateOptions,
+  RotateParams,
+  FlipDirection,
+  FlipOptions,
+  FlipParams,
 } from './operations';
 
 export type {

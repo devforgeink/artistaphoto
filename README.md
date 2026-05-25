@@ -57,6 +57,8 @@ await ArtistAPhoto.setLicenseKey('YOUR-LICENSE-KEY');
 ### Transformations
 - **Crop** - Custom region cropping
 - **Resize** - High-quality scaling with aspect ratio control
+- **Rotate** - Arbitrary angle rotation (90°, 180°, 270° or custom)
+- **Flip** - Horizontal and vertical mirroring
 - **Text** - Custom fonts, colors, shadows, stroke, rotation
 - **Shapes** - Rectangles & ellipses with fill and stroke
 
@@ -70,7 +72,8 @@ await ArtistAPhoto.setLicenseKey('YOUR-LICENSE-KEY');
 - Fluent API with method chaining
 - Full undo/redo support
 - Non-destructive editing
-- Web Workers for heavy operations
+- Native canvas filter acceleration
+- Incremental rendering with state caching
 - Export to JPEG, PNG, WebP
 - Full TypeScript support
 
@@ -177,7 +180,7 @@ try {
 
 Chrome, Edge, Firefox, Safari (last 2 versions)
 
-Requires: Canvas API, ES2020, Web Workers (optional)
+Requires: Canvas API, ES2020
 
 ## License
 

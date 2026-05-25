@@ -9,6 +9,8 @@ import { CropOperation } from '../operations/crop/CropOperation';
 import { ResizeOperation } from '../operations/resize/ResizeOperation';
 import { TextOperation } from '../operations/text/TextOperation';
 import { ShapeOperation } from '../operations/shape/ShapeOperation';
+import { RotateOperation } from '../operations/rotate/RotateOperation';
+import { FlipOperation } from '../operations/flip/FlipOperation';
 import { GrayscaleFilter } from '../operations/filters/GrayscaleFilter';
 import { SepiaFilter } from '../operations/filters/SepiaFilter';
 import { BlurFilter } from '../operations/filters/BlurFilter';
@@ -28,6 +30,8 @@ import type { Operation } from '../operations/base/Operation';
 import type {
   CropOptions,
   ResizeOptions,
+  ResizeParams,
+  RotateParams,
   FilterType,
   ExportFormat,
   TextOptions,
@@ -180,8 +184,37 @@ export class ArtistAPhoto {
 
   // ==================== Transformation Operations ====================
 
+  private getCurrentDimensions(): { width: number; height: number } {
+    let width = this.state.width;
+    let height = this.state.height;
+
+    for (const op of this.operationQueue.getActiveOperations()) {
+      if (op.type === 'crop') {
+        const cropParams = op.params as CropOptions;
+        width = cropParams.width;
+        height = cropParams.height;
+      } else if (op.type === 'resize') {
+        const resizeParams = op.params as ResizeParams;
+        width = resizeParams.width;
+        height = resizeParams.height;
+      } else if (op.type === 'rotate') {
+        const rotateParams = op.params as RotateParams;
+        const radians = (rotateParams.angle * Math.PI) / 180;
+        const sin = Math.abs(Math.sin(radians));
+        const cos = Math.abs(Math.cos(radians));
+        const newWidth = Math.round(width * cos + height * sin);
+        const newHeight = Math.round(width * sin + height * cos);
+        width = newWidth;
+        height = newHeight;
+      }
+    }
+
+    return { width, height };
+  }
+
   crop(options: CropOptions): this {
-    validateCropParams(options, this.state.width, this.state.height);
+    const { width, height } = this.getCurrentDimensions();
+    validateCropParams(options, width, height);
     const operation = new CropOperation(options);
     this.operationQueue.enqueue(operation);
     return this;
@@ -190,6 +223,24 @@ export class ArtistAPhoto {
   resize(width: number, height: number, options?: ResizeOptions): this {
     validateDimensions(width, height);
     const operation = new ResizeOperation(width, height, options);
+    this.operationQueue.enqueue(operation);
+    return this;
+  }
+
+  rotate(angle: number): this {
+    const operation = new RotateOperation(angle);
+    this.operationQueue.enqueue(operation);
+    return this;
+  }
+
+  flipHorizontal(): this {
+    const operation = new FlipOperation('horizontal');
+    this.operationQueue.enqueue(operation);
+    return this;
+  }
+
+  flipVertical(): this {
+    const operation = new FlipOperation('vertical');
     this.operationQueue.enqueue(operation);
     return this;
   }
@@ -315,6 +366,12 @@ export class ArtistAPhoto {
     return this.state.originalImageData;
   }
 
+  destroy(): void {
+    this.operationQueue.clear();
+    this.processor.invalidateCache();
+    this.state.release();
+  }
+
   async preview(): Promise<HTMLCanvasElement> {
     const operations = this.operationQueue.getActiveOperations();
     return await this.processor.execute(this.state, operations);
@@ -323,7 +380,11 @@ export class ArtistAPhoto {
   // ==================== Export Operations ====================
 
   async toCanvas(): Promise<HTMLCanvasElement> {
-    return await this.preview();
+    const canvas = await this.preview();
+    if (!LicenseManager.isLicenseValid()) {
+      applyWatermark(canvas);
+    }
+    return canvas;
   }
 
   async toBlob(format?: ExportFormat, quality?: number): Promise<Blob> {

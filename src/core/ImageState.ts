@@ -1,8 +1,8 @@
 import type { ImageMetadata } from '../types';
 
 export class ImageState {
-  readonly originalImage: HTMLImageElement;
-  readonly originalImageData: ImageData;
+  originalImage: HTMLImageElement;
+  originalImageData: ImageData;
   readonly width: number;
   readonly height: number;
   readonly metadata: ImageMetadata;
@@ -22,5 +22,11 @@ export class ImageState {
 
   clone(): ImageState {
     return new ImageState(this.originalImage, this.originalImageData);
+  }
+
+  release(): void {
+    this.originalImage.src = '';
+    this.originalImage = null!;
+    this.originalImageData = null!;
   }
 }
