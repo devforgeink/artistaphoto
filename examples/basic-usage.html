@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ArtistAPhoto - Basic Usage</title>
+  <title>Artista SDK - Basic Usage</title>
   <style>
     * {
       box-sizing: border-box;
@@ -166,7 +166,7 @@
   </style>
 </head>
 <body>
-  <h1>🎨 ArtistAPhoto SDK - Demo</h1>
+  <h1>🎨 Artista SDK - Demo</h1>
 
   <!-- License Activation Section -->
   <div id="licenseSection" class="container" style="max-width: 1400px; margin: 0 auto 20px auto; background: #fff3cd; border: 1px solid #ffc107;">
@@ -494,7 +494,7 @@
   </div>
 
   <script type="module">
-    import { ArtistAPhoto, LicenseError } from '../dist/index.mjs';
+    import { Artista, LicenseError } from '../dist/index.mjs';
 
     let editor = null;
     let isLicenseActive = false;
@@ -504,13 +504,13 @@
     // Verifica se já existe licença em cache ao carregar a página
     async function checkExistingLicense() {
       // Tenta recuperar licença do localStorage
-      const cachedLicense = localStorage.getItem('artistaphoto_license_cache');
+      const cachedLicense = localStorage.getItem('artista_license_cache');
       if (cachedLicense) {
         try {
           const cached = JSON.parse(cachedLicense);
           if (cached.expiresAt > Date.now()) {
             // Tem cache válido, tenta usar a key salva
-            const savedKey = localStorage.getItem('artistaphoto_user_key');
+            const savedKey = localStorage.getItem('artista_user_key');
             if (savedKey) {
               document.getElementById('licenseKeyInput').value = savedKey;
               await activateLicense(true); // silencioso
@@ -545,10 +545,10 @@
       statusDiv.style.display = 'none';
 
       try {
-        const licenseInfo = await ArtistAPhoto.setLicenseKey(key);
+        const licenseInfo = await Artista.setLicenseKey(key);
 
         // Salva a key do usuário para recuperar depois
-        localStorage.setItem('artistaphoto_user_key', key);
+        localStorage.setItem('artista_user_key', key);
 
         // Sucesso!
         isLicenseActive = true;
@@ -592,8 +592,8 @@
 
     // Limpa a licença
     window.clearLicense = function() {
-      ArtistAPhoto.clearLicense();
-      localStorage.removeItem('artistaphoto_user_key');
+      Artista.clearLicense();
+      localStorage.removeItem('artista_user_key');
       isLicenseActive = false;
 
       // Mostra seção de input novamente (banner de trial)
@@ -672,7 +672,7 @@
       if (!file) return;
 
       try {
-        editor = await ArtistAPhoto.fromFile(file);
+        editor = await Artista.fromFile(file);
 
         // Criar estrutura de canvas
         createCanvasStructure();
@@ -727,10 +727,10 @@
       ctx.textBaseline = 'middle';
       ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
       ctx.shadowBlur = 10;
-      ctx.fillText('ArtistAPhoto', canvas.width / 2, canvas.height / 2);
+      ctx.fillText('Artista', canvas.width / 2, canvas.height / 2);
       ctx.shadowBlur = 0;
 
-      editor = await ArtistAPhoto.fromCanvas(canvas);
+      editor = await Artista.fromCanvas(canvas);
 
       // Criar estrutura de canvas
       createCanvasStructure();
@@ -1020,7 +1020,7 @@
         webp: 'image/webp'
       };
 
-      await editor.download(`artistaphoto-edited.${format}`, formatMap[format], 0.9);
+      await editor.download(`artista-edited.${format}`, formatMap[format], 0.9);
     };
   </script>
 </body>

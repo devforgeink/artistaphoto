@@ -1,12 +1,12 @@
-ArtistAPhoto SDK Commercial License Agreement
+Artista SDK SDK Commercial License Agreement
 
-Copyright (c) 2026 ArtistAPhoto. All rights reserved.
+Copyright (c) 2026 Artista SDK. All rights reserved.
 
 IMPORTANT: READ THIS LICENSE AGREEMENT CAREFULLY BEFORE USING THIS SOFTWARE.
 
 1. DEFINITIONS
 
-"Software" means the ArtistAPhoto SDK software, including all source code,
+"Software" means the Artista SDK SDK software, including all source code,
 object code, documentation, and any updates or modifications thereto.
 
 "License Key" means the unique activation key provided upon purchase that
@@ -17,7 +17,7 @@ enables the use of the Software.
 2. GRANT OF LICENSE
 
 Subject to the terms of this Agreement and upon purchase of a valid License Key,
-ArtistAPhoto grants Licensee a non-exclusive, non-transferable, limited license to:
+Artista SDK grants Licensee a non-exclusive, non-transferable, limited license to:
 
 a) Use the Software in Licensee's own applications and projects
 b) Integrate the Software into commercial and non-commercial products
@@ -40,7 +40,7 @@ g) Use a single License Key for multiple unrelated projects (each project requir
 
 4. LICENSE KEY ACTIVATION
 
-a) The License Key must be activated through the official ArtistAPhoto API
+a) The License Key must be activated through the official Artista SDK API
 b) Each License Key has a limited number of activations as specified at purchase
 c) Activation is tied to the domain/application specified during activation
 d) Tampering with or circumventing the license validation system is prohibited
@@ -54,7 +54,7 @@ c) Major version upgrades may require separate purchase
 6. INTELLECTUAL PROPERTY
 
 The Software is protected by copyright and other intellectual property laws.
-ArtistAPhoto retains all rights, title, and interest in and to the Software,
+Artista SDK retains all rights, title, and interest in and to the Software,
 including all copyrights, patents, trade secrets, and other intellectual
 property rights.
 
@@ -75,7 +75,7 @@ INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES.
 9. TERMINATION
 
 a) This license is effective until terminated
-b) ArtistAPhoto may terminate this license if Licensee breaches any term
+b) Artista SDK may terminate this license if Licensee breaches any term
 c) Upon termination, Licensee must cease all use of the Software and destroy
    all copies
 d) License automatically terminates if the License Key expires and is not renewed

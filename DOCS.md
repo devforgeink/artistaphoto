@@ -1,6 +1,6 @@
-# ArtistAPhoto Documentation
+# Artista SDK Documentation
 
-Complete documentation for the ArtistAPhoto image editing SDK.
+Complete documentation for the Artista SDK image editing library.
 
 ---
 
@@ -29,7 +29,7 @@ Complete documentation for the ArtistAPhoto image editing SDK.
 
 ## Getting Started
 
-ArtistAPhoto is a powerful browser-based image editing SDK that provides a complete toolkit for image manipulation. With support for filters, adjustments, transformations, text overlays, shapes, and full undo/redo functionality, it's designed to integrate seamlessly into any web application.
+Artista is a powerful browser-based image editing SDK that provides a complete toolkit for image manipulation. With support for filters, adjustments, transformations, text overlays, shapes, and full undo/redo functionality, it's designed to integrate seamlessly into any web application.
 
 ### Key Features
 
@@ -45,10 +45,10 @@ ArtistAPhoto is a powerful browser-based image editing SDK that provides a compl
 ### Quick Example
 
 ```typescript
-import { ArtistAPhoto } from 'artistasdk';
+import { Artista } from 'artistasdk';
 
 // Load an image
-const editor = await ArtistAPhoto.fromFile(file);
+const editor = await Artista.fromFile(file);
 
 // Apply edits
 editor
@@ -88,27 +88,27 @@ pnpm add artistasdk
 ```html
 <script src="https://unpkg.com/artistasdk/dist/index.global.js"></script>
 <script>
-  const { ArtistAPhoto } = window.artistaphoto;
+  const { Artista } = window.artistaphoto;
 </script>
 ```
 
 ### ES Module Import
 
 ```typescript
-import { ArtistAPhoto } from 'artistasdk';
+import { Artista } from 'artistasdk';
 ```
 
 ### CommonJS
 
 ```javascript
-const { ArtistAPhoto } = require('artistaphoto');
+const { Artista } = require('artistaphoto');
 ```
 
 ---
 
 ## Licensing
 
-ArtistAPhoto is a commercial SDK with a free trial mode.
+Artista is a commercial SDK with a free trial mode.
 
 ### Trial Mode (No License)
 
@@ -120,7 +120,7 @@ Without a license key, the SDK operates in trial mode:
 | Preview (preview) | ✅ No watermark |
 | Export (toCanvas, toBlob, toDataURL, download) | ⚠️ **With watermark** |
 
-The watermark displays "ArtistAPhoto - UNLICENSED" diagonally across exported images.
+The watermark displays "Artista SDK - UNLICENSED" diagonally across exported images.
 
 ### Licensed Mode
 
@@ -139,11 +139,11 @@ Visit [polar.sh/artistaphoto](https://polar.sh/artistaphoto) to purchase a licen
 ### Activating Your License
 
 ```typescript
-import { ArtistAPhoto, LicenseError } from 'artistasdk';
+import { Artista, LicenseError } from 'artistasdk';
 
 async function activateLicense() {
   try {
-    const licenseInfo = await ArtistAPhoto.setLicenseKey('YOUR-LICENSE-KEY');
+    const licenseInfo = await Artista.setLicenseKey('YOUR-LICENSE-KEY');
     console.log('License activated!', licenseInfo);
   } catch (error) {
     if (error instanceof LicenseError) {
@@ -160,13 +160,13 @@ async function activateLicense() {
 ARTISTAPHOTO_LICENSE_KEY=YOUR-LICENSE-KEY
 
 // Your code
-await ArtistAPhoto.setLicenseKey(process.env.ARTISTAPHOTO_LICENSE_KEY);
+await Artista.setLicenseKey(process.env.ARTISTAPHOTO_LICENSE_KEY);
 ```
 
 ### License Configuration
 
 ```typescript
-ArtistAPhoto.configure({
+Artista.configure({
   cacheDuration: 24 * 60 * 60 * 1000, // Cache duration in ms (default: 24 hours)
   enableCache: true                    // Enable local caching (default: true)
 });
@@ -206,7 +206,7 @@ interface LicenseInfo {
 
 ### Fluent API
 
-ArtistAPhoto uses a fluent (chainable) API pattern. Most methods return `this`, allowing you to chain operations:
+Artista uses a fluent (chainable) API pattern. Most methods return `this`, allowing you to chain operations:
 
 ```typescript
 editor
@@ -241,12 +241,12 @@ const canvas = await editor.preview();
 
 ## Loading Images
 
-ArtistAPhoto provides multiple ways to load images.
+Artista provides multiple ways to load images.
 
 ### From URL
 
 ```typescript
-const editor = await ArtistAPhoto.fromUrl('https://example.com/image.jpg');
+const editor = await Artista.fromUrl('https://example.com/image.jpg');
 ```
 
 > **Note:** The image URL must be CORS-enabled or same-origin.
@@ -257,7 +257,7 @@ const editor = await ArtistAPhoto.fromUrl('https://example.com/image.jpg');
 const fileInput = document.getElementById('fileInput');
 fileInput.addEventListener('change', async (e) => {
   const file = e.target.files[0];
-  const editor = await ArtistAPhoto.fromFile(file);
+  const editor = await Artista.fromFile(file);
 });
 ```
 
@@ -265,14 +265,14 @@ fileInput.addEventListener('change', async (e) => {
 
 ```typescript
 const canvas = document.getElementById('myCanvas');
-const editor = await ArtistAPhoto.fromCanvas(canvas);
+const editor = await Artista.fromCanvas(canvas);
 ```
 
 ### From Image Element
 
 ```typescript
 const img = document.getElementById('myImage');
-const editor = await ArtistAPhoto.fromImageElement(img);
+const editor = await Artista.fromImageElement(img);
 ```
 
 ### Getting Original Image Data
@@ -595,7 +595,7 @@ editor.addText({
 
 // Styled text
 editor.addText({
-  text: 'ArtistAPhoto',
+  text: 'Artista',
   x: 200,
   y: 150,
   fontSize: 48,
@@ -724,12 +724,12 @@ Use the static `loadImage` helper to load an image from a URL or File before com
 
 ```typescript
 // From URL
-const logo = await ArtistAPhoto.loadImage('https://example.com/logo.png');
+const logo = await Artista.loadImage('https://example.com/logo.png');
 
 // From File input
 const fileInput = document.getElementById('overlayInput');
 const file = fileInput.files[0];
-const overlay = await ArtistAPhoto.loadImage(file);
+const overlay = await Artista.loadImage(file);
 ```
 
 You can also pass an existing `HTMLImageElement` or `HTMLCanvasElement` directly.
@@ -755,7 +755,7 @@ editor.addImage({
 
 ```typescript
 // Simple overlay at position
-const logo = await ArtistAPhoto.loadImage('logo.png');
+const logo = await Artista.loadImage('logo.png');
 editor.addImage({ image: logo, x: 10, y: 10 });
 
 // Resized overlay with transparency
@@ -788,7 +788,7 @@ editor
 
 **Logo/watermark:**
 ```typescript
-const logo = await ArtistAPhoto.loadImage('brand-logo.png');
+const logo = await Artista.loadImage('brand-logo.png');
 editor.addImage({
   image: logo,
   x: canvas.width - logo.width - 20,
@@ -799,8 +799,8 @@ editor.addImage({
 
 **Photo collage:**
 ```typescript
-const photo1 = await ArtistAPhoto.loadImage(file1);
-const photo2 = await ArtistAPhoto.loadImage(file2);
+const photo1 = await Artista.loadImage(file1);
+const photo2 = await Artista.loadImage(file2);
 
 editor
   .addImage({ image: photo1, x: 0, y: 0, width: 300, height: 200 })
@@ -809,7 +809,7 @@ editor
 
 **Sticker with rotation:**
 ```typescript
-const sticker = await ArtistAPhoto.loadImage('sticker.png');
+const sticker = await Artista.loadImage('sticker.png');
 editor.addImage({
   image: sticker,
   x: 150,
@@ -824,7 +824,7 @@ editor.addImage({
 
 ## Undo/Redo
 
-ArtistAPhoto maintains a complete history of operations, allowing full undo/redo support.
+Artista maintains a complete history of operations, allowing full undo/redo support.
 
 ### Undo
 
@@ -884,7 +884,7 @@ console.log('Operations:', history.length);
 ### Example Workflow
 
 ```typescript
-const editor = await ArtistAPhoto.fromUrl('/image.jpg');
+const editor = await Artista.fromUrl('/image.jpg');
 
 // Apply operations
 editor
@@ -1009,13 +1009,13 @@ await editor.download('my-photo.webp', 'image/webp', 0.85);
 
 ## Error Handling
 
-ArtistAPhoto provides specific error types for different failure scenarios.
+Artista provides specific error types for different failure scenarios.
 
 ### Error Types
 
 ```typescript
 import {
-  ArtistAPhoto,
+  Artista,
   LicenseError,
   ImageLoadError,
   InvalidCropError,
@@ -1029,7 +1029,7 @@ Thrown when license validation fails.
 
 ```typescript
 try {
-  await ArtistAPhoto.setLicenseKey('invalid-key');
+  await Artista.setLicenseKey('invalid-key');
 } catch (error) {
   if (error instanceof LicenseError) {
     console.error('Code:', error.code);
@@ -1054,7 +1054,7 @@ Thrown when image loading fails.
 
 ```typescript
 try {
-  const editor = await ArtistAPhoto.fromUrl('https://invalid-url.com/image.jpg');
+  const editor = await Artista.fromUrl('https://invalid-url.com/image.jpg');
 } catch (error) {
   if (error instanceof ImageLoadError) {
     console.error('Failed to load image:', error.message);
@@ -1100,7 +1100,7 @@ try {
 
 ```typescript
 import {
-  ArtistAPhoto,
+  Artista,
   LicenseError,
   ImageLoadError
 } from 'artistasdk';
@@ -1108,10 +1108,10 @@ import {
 async function editImage(file) {
   try {
     // Activate license
-    await ArtistAPhoto.setLicenseKey(process.env.LICENSE_KEY);
+    await Artista.setLicenseKey(process.env.LICENSE_KEY);
 
     // Load and edit
-    const editor = await ArtistAPhoto.fromFile(file);
+    const editor = await Artista.fromFile(file);
     editor.filter('vintage').brightness(10);
 
     // Export
@@ -1139,13 +1139,13 @@ async function editImage(file) {
 
 ## TypeScript
 
-ArtistAPhoto is written in TypeScript and includes full type definitions.
+Artista is written in TypeScript and includes full type definitions.
 
 ### Importing Types
 
 ```typescript
 import {
-  ArtistAPhoto,
+  Artista,
 
   // Error types
   LicenseError,
@@ -1249,14 +1249,14 @@ interface ShapeOptions {
 
 ```typescript
 import {
-  ArtistAPhoto,
+  Artista,
   FilterType,
   ExportFormat,
   CropOptions
 } from 'artistasdk';
 
 async function processImage(file: File): Promise<Blob> {
-  const editor = await ArtistAPhoto.fromFile(file);
+  const editor = await Artista.fromFile(file);
 
   const cropOptions: CropOptions = {
     x: 0,
@@ -1280,11 +1280,11 @@ async function processImage(file: File): Promise<Blob> {
 
 ## Performance
 
-ArtistAPhoto is optimized for performance in browser environments.
+Artista is optimized for performance in browser environments.
 
 ### Native Canvas Filters
 
-Where supported, ArtistAPhoto uses native CSS canvas filters (`ctx.filter`) for hardware-accelerated processing:
+Where supported, Artista uses native CSS canvas filters (`ctx.filter`) for hardware-accelerated processing:
 
 - Grayscale, sepia, invert, blur
 
@@ -1379,7 +1379,7 @@ function checkSupport(): boolean {
 
 ## FAQ
 
-### Can I use ArtistAPhoto without a license?
+### Can I use Artista without a license?
 
 Yes! The SDK works fully without a license. The only limitation is that exported images will have a watermark. This is perfect for:
 - Evaluation and testing
@@ -1388,21 +1388,21 @@ Yes! The SDK works fully without a license. The only limitation is that exported
 
 ### How does the watermark look?
 
-The watermark displays "ArtistAPhoto - UNLICENSED" in a diagonal pattern across the entire image. It's semi-transparent (30% opacity) gray text.
+The watermark displays "Artista SDK - UNLICENSED" in a diagonal pattern across the entire image. It's semi-transparent (30% opacity) gray text.
 
 ### Is the license a subscription?
 
 License terms are available at [polar.sh/artistaphoto](https://polar.sh/artistaphoto). Check the current offerings for subscription vs. one-time purchase options.
 
-### Can I use ArtistAPhoto on the server (Node.js)?
+### Can I use Artista on the server (Node.js)?
 
-ArtistAPhoto is designed for browser environments and requires Canvas API. For Node.js, you would need to use a Canvas implementation like `node-canvas` or `jsdom`. This is not officially supported but may work.
+Artista is designed for browser environments and requires Canvas API. For Node.js, you would need to use a Canvas implementation like `node-canvas` or `jsdom`. This is not officially supported but may work.
 
-### Does ArtistAPhoto modify the original image?
+### Does Artista modify the original image?
 
-No. ArtistAPhoto uses non-destructive editing. The original image is preserved, and all edits are stored as operations. You can always call `reset()` to return to the original.
+No. Artista uses non-destructive editing. The original image is preserved, and all edits are stored as operations. You can always call `reset()` to return to the original.
 
-### How large images can ArtistAPhoto handle?
+### How large images can Artista handle?
 
 This depends on the browser and device memory. Generally:
 - Up to 4000x4000 pixels works well on desktop
@@ -1432,7 +1432,7 @@ Currently, there's no built-in session persistence. The operation history is sto
 const response = await fetch('/api/proxy-image?url=' + encodeURIComponent(imageUrl));
 const blob = await response.blob();
 const file = new File([blob], 'image.jpg', { type: 'image/jpeg' });
-const editor = await ArtistAPhoto.fromFile(file);
+const editor = await Artista.fromFile(file);
 ```
 
 ### License validation fails

@@ -1,4 +1,4 @@
-import { CanvasContextError, ExportError } from '../errors/ArtistAPhotoError';
+import { CanvasContextError, ExportError } from '../errors/ArtistaError';
 import type { ExportFormat } from '../types';
 
 export function createCanvas(width: number, height: number): HTMLCanvasElement {
@@ -57,7 +57,7 @@ export function applyWatermark(canvas: HTMLCanvasElement): void {
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
 
-  const text = 'ArtistAPhoto - UNLICENSED';
+  const text = 'Artista SDK - UNLICENSED';
   const fontSize = Math.max(16, Math.floor(canvas.width * 0.03));
 
   ctx.save();

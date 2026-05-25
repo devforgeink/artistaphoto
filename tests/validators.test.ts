@@ -5,7 +5,7 @@ import {
   validateAdjustmentValue,
   validateFilterIntensity,
 } from '../src/utils/validators';
-import { InvalidDimensionsError, InvalidCropError } from '../src/errors/ArtistAPhotoError';
+import { InvalidDimensionsError, InvalidCropError } from '../src/errors/ArtistaError';
 
 describe('validateDimensions', () => {
   it('accepts valid dimensions', () => {

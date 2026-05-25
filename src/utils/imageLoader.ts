@@ -1,4 +1,4 @@
-import { ImageLoadError } from '../errors/ArtistAPhotoError';
+import { ImageLoadError } from '../errors/ArtistaError';
 import { createCanvas, getContext2D } from './canvas';
 
 export async function loadImageFromUrl(url: string): Promise<HTMLImageElement> {

@@ -45,7 +45,7 @@ import type {
 // Re-export LicenseError for consumers
 export { LicenseError };
 
-export class ArtistAPhoto {
+export class Artista {
   private state: ImageState;
   private operationQueue: OperationQueue;
   private processor: ImageProcessor;
@@ -63,7 +63,7 @@ export class ArtistAPhoto {
    * @param config - License configuration options
    * @example
    * ```typescript
-   * ArtistAPhoto.configure({
+   * Artista.configure({
    *   storeUrl: 'https://yourstore.lemonsqueezy.com',
    *   cacheDuration: 24 * 60 * 60 * 1000, // 24 hours
    *   enableCache: true
@@ -83,7 +83,7 @@ export class ArtistAPhoto {
    * @example
    * ```typescript
    * try {
-   *   const licenseInfo = await ArtistAPhoto.setLicenseKey('APH-XXXX-XXXX-XXXX');
+   *   const licenseInfo = await Artista.setLicenseKey('APH-XXXX-XXXX-XXXX');
    *   console.log('License activated:', licenseInfo.productName);
    * } catch (error) {
    *   if (error instanceof LicenseError) {
@@ -134,54 +134,54 @@ export class ArtistAPhoto {
   /**
    * Create an editor instance from an image URL
    * @param url - The URL of the image to load
-   * @returns Promise<ArtistAPhoto> - Editor instance
+   * @returns Promise<Artista> - Editor instance
    * @throws LicenseError if no valid license is set
    */
-  static async fromUrl(url: string): Promise<ArtistAPhoto> {
+  static async fromUrl(url: string): Promise<Artista> {
     const img = await loadImageFromUrl(url);
     const imageData = getImageData(img);
     const state = new ImageState(img, imageData);
-    return new ArtistAPhoto(state);
+    return new Artista(state);
   }
 
   /**
    * Create an editor instance from a File object
    * @param file - The File object (from file input)
-   * @returns Promise<ArtistAPhoto> - Editor instance
+   * @returns Promise<Artista> - Editor instance
    * @throws LicenseError if no valid license is set
    */
-  static async fromFile(file: File): Promise<ArtistAPhoto> {
+  static async fromFile(file: File): Promise<Artista> {
     const img = await loadImageFromFile(file);
     const imageData = getImageData(img);
     const state = new ImageState(img, imageData);
-    return new ArtistAPhoto(state);
+    return new Artista(state);
   }
 
   /**
    * Create an editor instance from an existing canvas
    * @param canvas - The HTMLCanvasElement to use
-   * @returns Promise<ArtistAPhoto> - Editor instance
+   * @returns Promise<Artista> - Editor instance
    * @throws LicenseError if no valid license is set
    */
-  static async fromCanvas(canvas: HTMLCanvasElement): Promise<ArtistAPhoto> {
+  static async fromCanvas(canvas: HTMLCanvasElement): Promise<Artista> {
     const img = new Image();
     img.src = canvas.toDataURL();
     await new Promise((resolve) => (img.onload = resolve));
     const imageData = getImageData(img);
     const state = new ImageState(img, imageData);
-    return new ArtistAPhoto(state);
+    return new Artista(state);
   }
 
   /**
    * Create an editor instance from an existing image element
    * @param img - The HTMLImageElement to use
-   * @returns Promise<ArtistAPhoto> - Editor instance
+   * @returns Promise<Artista> - Editor instance
    * @throws LicenseError if no valid license is set
    */
-  static async fromImageElement(img: HTMLImageElement): Promise<ArtistAPhoto> {
+  static async fromImageElement(img: HTMLImageElement): Promise<Artista> {
     const imageData = getImageData(img);
     const state = new ImageState(img, imageData);
-    return new ArtistAPhoto(state);
+    return new Artista(state);
   }
 
   // ==================== Utility Methods ====================

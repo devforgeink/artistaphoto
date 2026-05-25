@@ -1,5 +1,5 @@
 // Main SDK class
-export { ArtistAPhoto, LicenseError } from './core/ArtistAPhoto';
+export { Artista, LicenseError } from './core/Artista';
 
 // Export all types
 export type {
@@ -31,28 +31,28 @@ export type {
 
 // Export errors
 export {
-  ArtistAPhotoError,
+  ArtistaError,
   InvalidDimensionsError,
   InvalidCropError,
   ImageLoadError,
   ExportError,
   CanvasContextError,
-} from './errors/ArtistAPhotoError';
+} from './errors/ArtistaError';
 
 // Convenience factory function
 export async function createEditor(
   source: string | File | HTMLImageElement | HTMLCanvasElement
-): Promise<import('./core/ArtistAPhoto').ArtistAPhoto> {
-  const { ArtistAPhoto } = await import('./core/ArtistAPhoto');
+): Promise<import('./core/Artista').Artista> {
+  const { Artista } = await import('./core/Artista');
 
   if (typeof source === 'string') {
-    return ArtistAPhoto.fromUrl(source);
+    return Artista.fromUrl(source);
   } else if (source instanceof File) {
-    return ArtistAPhoto.fromFile(source);
+    return Artista.fromFile(source);
   } else if (source instanceof HTMLImageElement) {
-    return ArtistAPhoto.fromImageElement(source);
+    return Artista.fromImageElement(source);
   } else if (source instanceof HTMLCanvasElement) {
-    return ArtistAPhoto.fromCanvas(source);
+    return Artista.fromCanvas(source);
   }
 
   throw new Error('Unsupported source type');

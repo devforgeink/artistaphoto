@@ -1,4 +1,4 @@
-import { InvalidDimensionsError, InvalidCropError } from '../errors/ArtistAPhotoError';
+import { InvalidDimensionsError, InvalidCropError } from '../errors/ArtistaError';
 import type { CropOptions } from '../types';
 
 const MAX_DIMENSION = 16384;

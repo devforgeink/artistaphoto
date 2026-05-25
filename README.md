@@ -1,4 +1,4 @@
-# ArtistAPhoto
+# Artista SDK
 
 [![npm version](https://img.shields.io/npm/v/artistasdk.svg)](https://www.npmjs.com/package/artistasdk)
 [![License: Commercial](https://img.shields.io/badge/license-Commercial-blue.svg)](https://artistasdk.com)
@@ -7,7 +7,7 @@
 **Powerful browser-based image editing SDK with filters, adjustments, crop, resize, text, shapes, and undo/redo support.**
 
 <!-- TODO: Add demo GIF here -->
-<!-- ![ArtistAPhoto Demo](demo.gif) -->
+<!-- ![Artista Demo](demo.gif) -->
 
 ## Installation
 
@@ -29,10 +29,10 @@ Purchase a license at [artistasdk.com](https://artistasdk.com)
 ## Quick Start
 
 ```typescript
-import { ArtistAPhoto } from 'artistasdk';
+import { Artista } from 'artistasdk';
 
 // Load image (works without license - exports will have watermark)
-const editor = await ArtistAPhoto.fromFile(file);
+const editor = await Artista.fromFile(file);
 
 // Edit with chainable API
 editor
@@ -49,7 +49,7 @@ await editor.download('edited.jpg', 'image/jpeg', 0.9);
 ### Activate License (removes watermark)
 
 ```typescript
-await ArtistAPhoto.setLicenseKey('YOUR-LICENSE-KEY');
+await Artista.setLicenseKey('YOUR-LICENSE-KEY');
 ```
 
 ## Features
@@ -82,10 +82,10 @@ await ArtistAPhoto.setLicenseKey('YOUR-LICENSE-KEY');
 ### Loading Images
 
 ```typescript
-const editor = await ArtistAPhoto.fromUrl('https://example.com/image.jpg');
-const editor = await ArtistAPhoto.fromFile(fileInput.files[0]);
-const editor = await ArtistAPhoto.fromCanvas(canvasElement);
-const editor = await ArtistAPhoto.fromImageElement(imgElement);
+const editor = await Artista.fromUrl('https://example.com/image.jpg');
+const editor = await Artista.fromFile(fileInput.files[0]);
+const editor = await Artista.fromCanvas(canvasElement);
+const editor = await Artista.fromImageElement(imgElement);
 ```
 
 ### Transformations
@@ -155,20 +155,20 @@ await editor.download('image.jpg', 'image/jpeg', 0.9);
 ### License Management
 
 ```typescript
-await ArtistAPhoto.setLicenseKey('YOUR-KEY');  // Activate
-ArtistAPhoto.isLicenseValid();                  // Check status
-ArtistAPhoto.getLicenseInfo();                  // Get details
-ArtistAPhoto.clearLicense();                    // Deactivate
-await ArtistAPhoto.refreshLicense();            // Force refresh
+await Artista.setLicenseKey('YOUR-KEY');  // Activate
+Artista.isLicenseValid();                  // Check status
+Artista.getLicenseInfo();                  // Get details
+Artista.clearLicense();                    // Deactivate
+await Artista.refreshLicense();            // Force refresh
 ```
 
 ## Error Handling
 
 ```typescript
-import { ArtistAPhoto, LicenseError, ImageLoadError } from 'artistasdk';
+import { Artista, LicenseError, ImageLoadError } from 'artistasdk';
 
 try {
-  await ArtistAPhoto.setLicenseKey('invalid-key');
+  await Artista.setLicenseKey('invalid-key');
 } catch (error) {
   if (error instanceof LicenseError) {
     console.error(error.code, error.message);

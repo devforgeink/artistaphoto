@@ -13,11 +13,11 @@ export default defineConfig({
   treeshake: true,
   target: 'es2020',
   platform: 'browser',
-  globalName: 'ArtistAPhoto',
+  globalName: 'ArtistaSDK',
   outDir: 'dist',
   esbuildOptions(options) {
     options.banner = {
-      js: '/* ArtistAPhoto - Browser Image Editor SDK */',
+      js: '/* Artista SDK - Browser Image Editor SDK */',
     };
   },
 });

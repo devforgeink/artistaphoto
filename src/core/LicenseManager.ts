@@ -5,7 +5,7 @@ import type {
   LicenseStatus,
 } from '../types';
 
-const CACHE_KEY = 'artistaphoto_license_cache';
+const CACHE_KEY = 'artista_license_cache';
 const DEFAULT_CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
 const DEFAULT_STORE_URL = 'https://srsigor.gumroad.com';
 const GUMROAD_API_URL = 'https://api.gumroad.com/v2/licenses/verify';
@@ -116,7 +116,7 @@ export class LicenseManager {
     if (!LicenseManager.isLicenseValid()) {
       const storeUrl = _config.storeUrl || DEFAULT_STORE_URL;
       throw new LicenseError(
-        `License key required. Call ArtistAPhoto.setLicenseKey() first.\n` +
+        `License key required. Call Artista.setLicenseKey() first.\n` +
         `Purchase a license at: ${storeUrl}`,
         'LICENSE_REQUIRED'
       );

@@ -1,12 +1,12 @@
-export class ArtistAPhotoError extends Error {
+export class ArtistaError extends Error {
   constructor(message: string) {
     super(message);
-    this.name = 'ArtistAPhotoError';
-    Object.setPrototypeOf(this, ArtistAPhotoError.prototype);
+    this.name = 'ArtistaError';
+    Object.setPrototypeOf(this, ArtistaError.prototype);
   }
 }
 
-export class InvalidDimensionsError extends ArtistAPhotoError {
+export class InvalidDimensionsError extends ArtistaError {
   constructor(message: string = 'Invalid dimensions') {
     super(message);
     this.name = 'InvalidDimensionsError';
@@ -14,7 +14,7 @@ export class InvalidDimensionsError extends ArtistAPhotoError {
   }
 }
 
-export class InvalidCropError extends ArtistAPhotoError {
+export class InvalidCropError extends ArtistaError {
   constructor(message: string = 'Invalid crop parameters') {
     super(message);
     this.name = 'InvalidCropError';
@@ -22,7 +22,7 @@ export class InvalidCropError extends ArtistAPhotoError {
   }
 }
 
-export class ImageLoadError extends ArtistAPhotoError {
+export class ImageLoadError extends ArtistaError {
   constructor(message: string = 'Failed to load image') {
     super(message);
     this.name = 'ImageLoadError';
@@ -30,7 +30,7 @@ export class ImageLoadError extends ArtistAPhotoError {
   }
 }
 
-export class ExportError extends ArtistAPhotoError {
+export class ExportError extends ArtistaError {
   constructor(message: string = 'Failed to export image') {
     super(message);
     this.name = 'ExportError';
@@ -38,7 +38,7 @@ export class ExportError extends ArtistAPhotoError {
   }
 }
 
-export class CanvasContextError extends ArtistAPhotoError {
+export class CanvasContextError extends ArtistaError {
   constructor(message: string = 'Failed to get canvas context') {
     super(message);
     this.name = 'CanvasContextError';

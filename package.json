@@ -1,6 +1,6 @@
 {
   "name": "artistasdk",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Professional image editor SDK for browser with filters, adjustments, crop, resize, text, shapes and more",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -41,7 +41,7 @@
     "filters",
     "adjustments"
   ],
-  "author": "ArtistAPhoto",
+  "author": "Artista SDK",
   "license": "SEE LICENSE IN LICENSE",
   "homepage": "https://artistasdk.com",
   "devDependencies": {

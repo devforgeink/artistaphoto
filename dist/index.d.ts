@@ -230,7 +230,7 @@ interface Operation {
     validate(): boolean;
 }
 
-declare class ArtistAPhoto {
+declare class Artista {
     private state;
     private operationQueue;
     private processor;
@@ -240,7 +240,7 @@ declare class ArtistAPhoto {
      * @param config - License configuration options
      * @example
      * ```typescript
-     * ArtistAPhoto.configure({
+     * Artista.configure({
      *   storeUrl: 'https://yourstore.lemonsqueezy.com',
      *   cacheDuration: 24 * 60 * 60 * 1000, // 24 hours
      *   enableCache: true
@@ -257,7 +257,7 @@ declare class ArtistAPhoto {
      * @example
      * ```typescript
      * try {
-     *   const licenseInfo = await ArtistAPhoto.setLicenseKey('APH-XXXX-XXXX-XXXX');
+     *   const licenseInfo = await Artista.setLicenseKey('APH-XXXX-XXXX-XXXX');
      *   console.log('License activated:', licenseInfo.productName);
      * } catch (error) {
      *   if (error instanceof LicenseError) {
@@ -291,31 +291,31 @@ declare class ArtistAPhoto {
     /**
      * Create an editor instance from an image URL
      * @param url - The URL of the image to load
-     * @returns Promise<ArtistAPhoto> - Editor instance
+     * @returns Promise<Artista> - Editor instance
      * @throws LicenseError if no valid license is set
      */
-    static fromUrl(url: string): Promise<ArtistAPhoto>;
+    static fromUrl(url: string): Promise<Artista>;
     /**
      * Create an editor instance from a File object
      * @param file - The File object (from file input)
-     * @returns Promise<ArtistAPhoto> - Editor instance
+     * @returns Promise<Artista> - Editor instance
      * @throws LicenseError if no valid license is set
      */
-    static fromFile(file: File): Promise<ArtistAPhoto>;
+    static fromFile(file: File): Promise<Artista>;
     /**
      * Create an editor instance from an existing canvas
      * @param canvas - The HTMLCanvasElement to use
-     * @returns Promise<ArtistAPhoto> - Editor instance
+     * @returns Promise<Artista> - Editor instance
      * @throws LicenseError if no valid license is set
      */
-    static fromCanvas(canvas: HTMLCanvasElement): Promise<ArtistAPhoto>;
+    static fromCanvas(canvas: HTMLCanvasElement): Promise<Artista>;
     /**
      * Create an editor instance from an existing image element
      * @param img - The HTMLImageElement to use
-     * @returns Promise<ArtistAPhoto> - Editor instance
+     * @returns Promise<Artista> - Editor instance
      * @throws LicenseError if no valid license is set
      */
-    static fromImageElement(img: HTMLImageElement): Promise<ArtistAPhoto>;
+    static fromImageElement(img: HTMLImageElement): Promise<Artista>;
     static loadImage(source: string | File): Promise<HTMLImageElement>;
     private getCurrentDimensions;
     crop(options: CropOptions): this;
@@ -347,25 +347,25 @@ declare class ArtistAPhoto {
     download(filename: string, format?: ExportFormat, quality?: number): Promise<void>;
 }
 
-declare class ArtistAPhotoError extends Error {
+declare class ArtistaError extends Error {
     constructor(message: string);
 }
-declare class InvalidDimensionsError extends ArtistAPhotoError {
+declare class InvalidDimensionsError extends ArtistaError {
     constructor(message?: string);
 }
-declare class InvalidCropError extends ArtistAPhotoError {
+declare class InvalidCropError extends ArtistaError {
     constructor(message?: string);
 }
-declare class ImageLoadError extends ArtistAPhotoError {
+declare class ImageLoadError extends ArtistaError {
     constructor(message?: string);
 }
-declare class ExportError extends ArtistAPhotoError {
+declare class ExportError extends ArtistaError {
     constructor(message?: string);
 }
-declare class CanvasContextError extends ArtistAPhotoError {
+declare class CanvasContextError extends ArtistaError {
     constructor(message?: string);
 }
 
-declare function createEditor(source: string | File | HTMLImageElement | HTMLCanvasElement): Promise<ArtistAPhoto>;
+declare function createEditor(source: string | File | HTMLImageElement | HTMLCanvasElement): Promise<Artista>;
 
-export { type AdjustmentParams, type AdjustmentType, ArtistAPhoto, ArtistAPhotoError, CanvasContextError, type CropOptions, ExportError, type ExportFormat, type ExportOptions, type FilterParams, type FilterType, type FlipDirection, type FlipOptions, ImageLoadError, type ImageMetadata, type ImageOverlayOptions, InvalidCropError, InvalidDimensionsError, type LicenseConfig, LicenseError, type LicenseInfo, type LicenseStatus, type LicenseValidationResult, type OperationType, type ResizeOptions, type RotateOptions, type ShapeOptions, type ShapeParams, type ShapeType, type TextOptions, type TextParams, createEditor };
+export { type AdjustmentParams, type AdjustmentType, Artista, ArtistaError, CanvasContextError, type CropOptions, ExportError, type ExportFormat, type ExportOptions, type FilterParams, type FilterType, type FlipDirection, type FlipOptions, ImageLoadError, type ImageMetadata, type ImageOverlayOptions, InvalidCropError, InvalidDimensionsError, type LicenseConfig, LicenseError, type LicenseInfo, type LicenseStatus, type LicenseValidationResult, type OperationType, type ResizeOptions, type RotateOptions, type ShapeOptions, type ShapeParams, type ShapeType, type TextOptions, type TextParams, createEditor };
