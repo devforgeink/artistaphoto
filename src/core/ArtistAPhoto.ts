@@ -11,6 +11,7 @@ import { TextOperation } from '../operations/text/TextOperation';
 import { ShapeOperation } from '../operations/shape/ShapeOperation';
 import { RotateOperation } from '../operations/rotate/RotateOperation';
 import { FlipOperation } from '../operations/flip/FlipOperation';
+import { ImageOverlayOperation } from '../operations/imageOverlay/ImageOverlayOperation';
 import { GrayscaleFilter } from '../operations/filters/GrayscaleFilter';
 import { SepiaFilter } from '../operations/filters/SepiaFilter';
 import { BlurFilter } from '../operations/filters/BlurFilter';
@@ -36,6 +37,7 @@ import type {
   ExportFormat,
   TextOptions,
   ShapeOptions,
+  ImageOverlayOptions,
   LicenseInfo,
   LicenseConfig,
 } from '../types';
@@ -182,6 +184,15 @@ export class ArtistAPhoto {
     return new ArtistAPhoto(state);
   }
 
+  // ==================== Utility Methods ====================
+
+  static async loadImage(source: string | File): Promise<HTMLImageElement> {
+    if (typeof source === 'string') {
+      return loadImageFromUrl(source);
+    }
+    return loadImageFromFile(source);
+  }
+
   // ==================== Transformation Operations ====================
 
   private getCurrentDimensions(): { width: number; height: number } {
@@ -253,6 +264,12 @@ export class ArtistAPhoto {
 
   addShape(options: ShapeOptions): this {
     const operation = new ShapeOperation(options);
+    this.operationQueue.enqueue(operation);
+    return this;
+  }
+
+  addImage(options: ImageOverlayOptions): this {
+    const operation = new ImageOverlayOperation(options);
     this.operationQueue.enqueue(operation);
     return this;
   }

@@ -1,4 +1,4 @@
-export type OperationType = 'crop' | 'resize' | 'filter' | 'adjustment' | 'text' | 'shape' | 'rotate' | 'flip';
+export type OperationType = 'crop' | 'resize' | 'filter' | 'adjustment' | 'text' | 'shape' | 'rotate' | 'flip' | 'imageOverlay';
 
 export interface OperationParams {
   [key: string]: any;
@@ -101,4 +101,24 @@ export interface FlipOptions {
 
 export interface FlipParams {
   direction: FlipDirection;
+}
+
+export interface ImageOverlayOptions {
+  image: HTMLImageElement | HTMLCanvasElement;
+  x: number;
+  y: number;
+  width?: number;
+  height?: number;
+  opacity?: number;
+  rotation?: number;
+}
+
+export interface ImageOverlayParams {
+  image: HTMLImageElement | HTMLCanvasElement;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  opacity: number;
+  rotation: number;
 }

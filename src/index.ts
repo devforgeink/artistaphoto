@@ -21,6 +21,7 @@ export type {
   RotateOptions,
   FlipDirection,
   FlipOptions,
+  ImageOverlayOptions,
   // License types
   LicenseStatus,
   LicenseInfo,

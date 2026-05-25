@@ -1,4 +1,4 @@
-type OperationType = 'crop' | 'resize' | 'filter' | 'adjustment' | 'text' | 'shape' | 'rotate' | 'flip';
+type OperationType = 'crop' | 'resize' | 'filter' | 'adjustment' | 'text' | 'shape' | 'rotate' | 'flip' | 'imageOverlay';
 interface OperationParams {
     [key: string]: any;
 }
@@ -75,6 +75,15 @@ interface RotateOptions {
 type FlipDirection = 'horizontal' | 'vertical';
 interface FlipOptions {
     direction: FlipDirection;
+}
+interface ImageOverlayOptions {
+    image: HTMLImageElement | HTMLCanvasElement;
+    x: number;
+    y: number;
+    width?: number;
+    height?: number;
+    opacity?: number;
+    rotation?: number;
 }
 
 type FilterType = 'grayscale' | 'sepia' | 'blur' | 'sharpen' | 'vintage' | 'invert' | 'vignette' | 'posterize' | 'pixelate' | 'edgeDetection';
@@ -307,6 +316,7 @@ declare class ArtistAPhoto {
      * @throws LicenseError if no valid license is set
      */
     static fromImageElement(img: HTMLImageElement): Promise<ArtistAPhoto>;
+    static loadImage(source: string | File): Promise<HTMLImageElement>;
     private getCurrentDimensions;
     crop(options: CropOptions): this;
     resize(width: number, height: number, options?: ResizeOptions): this;
@@ -315,6 +325,7 @@ declare class ArtistAPhoto {
     flipVertical(): this;
     addText(options: TextOptions): this;
     addShape(options: ShapeOptions): this;
+    addImage(options: ImageOverlayOptions): this;
     filter(type: FilterType, intensity?: number): this;
     brightness(value: number): this;
     contrast(value: number): this;
@@ -328,6 +339,7 @@ declare class ArtistAPhoto {
     getHistory(): ReadonlyArray<Operation>;
     reset(): this;
     getOriginal(): ImageData;
+    destroy(): void;
     preview(): Promise<HTMLCanvasElement>;
     toCanvas(): Promise<HTMLCanvasElement>;
     toBlob(format?: ExportFormat, quality?: number): Promise<Blob>;
@@ -356,4 +368,4 @@ declare class CanvasContextError extends ArtistAPhotoError {
 
 declare function createEditor(source: string | File | HTMLImageElement | HTMLCanvasElement): Promise<ArtistAPhoto>;
 
-export { type AdjustmentParams, type AdjustmentType, ArtistAPhoto, ArtistAPhotoError, CanvasContextError, type CropOptions, ExportError, type ExportFormat, type ExportOptions, type FilterParams, type FilterType, type FlipDirection, type FlipOptions, ImageLoadError, type ImageMetadata, InvalidCropError, InvalidDimensionsError, type LicenseConfig, LicenseError, type LicenseInfo, type LicenseStatus, type LicenseValidationResult, type OperationType, type ResizeOptions, type RotateOptions, type ShapeOptions, type ShapeParams, type ShapeType, type TextOptions, type TextParams, createEditor };
+export { type AdjustmentParams, type AdjustmentType, ArtistAPhoto, ArtistAPhotoError, CanvasContextError, type CropOptions, ExportError, type ExportFormat, type ExportOptions, type FilterParams, type FilterType, type FlipDirection, type FlipOptions, ImageLoadError, type ImageMetadata, type ImageOverlayOptions, InvalidCropError, InvalidDimensionsError, type LicenseConfig, LicenseError, type LicenseInfo, type LicenseStatus, type LicenseValidationResult, type OperationType, type ResizeOptions, type RotateOptions, type ShapeOptions, type ShapeParams, type ShapeType, type TextOptions, type TextParams, createEditor };

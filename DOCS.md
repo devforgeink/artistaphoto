@@ -15,7 +15,8 @@ Complete documentation for the ArtistAPhoto image editing SDK.
 7. [Filters](#filters)
 8. [Adjustments](#adjustments)
 9. [Text & Shapes](#text--shapes)
-10. [Undo/Redo](#undoredo)
+10. [Image Composition](#image-composition)
+11. [Undo/Redo](#undoredo)
 11. [Exporting](#exporting)
 12. [Error Handling](#error-handling)
 13. [TypeScript](#typescript)
@@ -35,7 +36,7 @@ ArtistAPhoto is a powerful browser-based image editing SDK that provides a compl
 - **10 Professional Filters** - Grayscale, sepia, blur, sharpen, vintage, invert, vignette, posterize, pixelate, edge detection
 - **5 Image Adjustments** - Brightness, contrast, saturation, exposure, temperature
 - **Transformations** - Crop, resize, rotate, flip
-- **Overlays** - Text with full styling, shapes (rectangles, ellipses)
+- **Overlays** - Text with full styling, shapes (rectangles, ellipses), image composition
 - **Non-destructive Editing** - Original image preserved, full undo/redo
 - **High Performance** - Native canvas filter acceleration with incremental state caching
 - **TypeScript Ready** - Full type definitions included
@@ -44,7 +45,7 @@ ArtistAPhoto is a powerful browser-based image editing SDK that provides a compl
 ### Quick Example
 
 ```typescript
-import { ArtistAPhoto } from 'artistaphoto';
+import { ArtistAPhoto } from 'artistasdk';
 
 // Load an image
 const editor = await ArtistAPhoto.fromFile(file);
@@ -67,25 +68,25 @@ await editor.download('edited-photo.jpg', 'image/jpeg', 0.9);
 ### npm
 
 ```bash
-npm install artistaphoto
+npm install artistasdk
 ```
 
 ### yarn
 
 ```bash
-yarn add artistaphoto
+yarn add artistasdk
 ```
 
 ### pnpm
 
 ```bash
-pnpm add artistaphoto
+pnpm add artistasdk
 ```
 
 ### CDN (Browser)
 
 ```html
-<script src="https://unpkg.com/artistaphoto/dist/index.global.js"></script>
+<script src="https://unpkg.com/artistasdk/dist/index.global.js"></script>
 <script>
   const { ArtistAPhoto } = window.artistaphoto;
 </script>
@@ -94,7 +95,7 @@ pnpm add artistaphoto
 ### ES Module Import
 
 ```typescript
-import { ArtistAPhoto } from 'artistaphoto';
+import { ArtistAPhoto } from 'artistasdk';
 ```
 
 ### CommonJS
@@ -116,8 +117,8 @@ Without a license key, the SDK operates in trial mode:
 | Feature | Trial Mode |
 |---------|-----------|
 | All editing features | ✅ Available |
-| Preview (toCanvas) | ✅ No watermark |
-| Export (toBlob, toDataURL, download) | ⚠️ **With watermark** |
+| Preview (preview) | ✅ No watermark |
+| Export (toCanvas, toBlob, toDataURL, download) | ⚠️ **With watermark** |
 
 The watermark displays "ArtistAPhoto - UNLICENSED" diagonally across exported images.
 
@@ -128,8 +129,8 @@ With a valid license key:
 | Feature | Licensed Mode |
 |---------|--------------|
 | All editing features | ✅ Available |
-| Preview | ✅ No watermark |
-| Export | ✅ **No watermark** |
+| Preview (preview) | ✅ No watermark |
+| Export (toCanvas, toBlob, toDataURL, download) | ✅ **No watermark** |
 
 ### Purchasing a License
 
@@ -138,7 +139,7 @@ Visit [polar.sh/artistaphoto](https://polar.sh/artistaphoto) to purchase a licen
 ### Activating Your License
 
 ```typescript
-import { ArtistAPhoto, LicenseError } from 'artistaphoto';
+import { ArtistAPhoto, LicenseError } from 'artistasdk';
 
 async function activateLicense() {
   try {
@@ -319,8 +320,8 @@ editor.resize(
   width: number,   // Target width (required)
   height: number,  // Target height (required)
   options?: {
-    quality?: 'low' | 'medium' | 'high',  // Default: 'medium'
-    maintainAspectRatio?: boolean          // Default: false
+    quality?: 'low' | 'medium' | 'high',  // Default: 'high'
+    maintainAspectRatio?: boolean          // Default: true
   }
 );
 ```
@@ -342,6 +343,60 @@ editor.resize(800, 600, {
 - `low` - Fastest, suitable for thumbnails
 - `medium` - Balanced quality and speed
 - `high` - Best quality, uses multi-step algorithm
+
+### Rotate
+
+Rotate the image by an arbitrary angle.
+
+```typescript
+editor.rotate(angle: number); // Angle in degrees
+```
+
+**Examples:**
+
+```typescript
+// Rotate 90° clockwise
+editor.rotate(90);
+
+// Rotate 180°
+editor.rotate(180);
+
+// Rotate 45° (canvas expands to fit rotated image)
+editor.rotate(45);
+
+// Negative angles rotate counter-clockwise
+editor.rotate(-90); // Same as rotate(270)
+```
+
+**Notes:**
+- Angles are normalized to 0-359
+- For 90/180/270, dimensions swap as expected
+- Arbitrary angles expand the canvas to fit the rotated image without clipping
+
+### Flip
+
+Mirror the image horizontally or vertically.
+
+```typescript
+editor.flipHorizontal(); // Mirror left-right
+editor.flipVertical();   // Mirror top-bottom
+```
+
+**Examples:**
+
+```typescript
+// Mirror selfie
+editor.flipHorizontal();
+
+// Flip upside down
+editor.flipVertical();
+
+// Combine with other operations
+editor
+  .flipHorizontal()
+  .filter('vintage', 0.7)
+  .brightness(10);
+```
 
 ---
 
@@ -659,6 +714,114 @@ editor.addShape({
 
 ---
 
+## Image Composition
+
+Overlay images on top of the current canvas — perfect for logos, watermarks, collages, and photo montages.
+
+### Loading an Overlay Image
+
+Use the static `loadImage` helper to load an image from a URL or File before composing:
+
+```typescript
+// From URL
+const logo = await ArtistAPhoto.loadImage('https://example.com/logo.png');
+
+// From File input
+const fileInput = document.getElementById('overlayInput');
+const file = fileInput.files[0];
+const overlay = await ArtistAPhoto.loadImage(file);
+```
+
+You can also pass an existing `HTMLImageElement` or `HTMLCanvasElement` directly.
+
+### Adding an Image Overlay
+
+```typescript
+editor.addImage({
+  // Required
+  image: HTMLImageElement | HTMLCanvasElement,
+  x: number,
+  y: number,
+
+  // Optional
+  width?: number,     // Default: source image width
+  height?: number,    // Default: source image height
+  opacity?: number,   // 0-1, default: 1
+  rotation?: number,  // Degrees, default: 0
+});
+```
+
+### Examples
+
+```typescript
+// Simple overlay at position
+const logo = await ArtistAPhoto.loadImage('logo.png');
+editor.addImage({ image: logo, x: 10, y: 10 });
+
+// Resized overlay with transparency
+editor.addImage({
+  image: logo,
+  x: 50,
+  y: 50,
+  width: 100,
+  height: 50,
+  opacity: 0.7
+});
+
+// Rotated stamp
+editor.addImage({
+  image: logo,
+  x: 200,
+  y: 200,
+  rotation: -15,
+  opacity: 0.5
+});
+
+// Combine with other operations (chainable)
+editor
+  .brightness(10)
+  .addImage({ image: logo, x: 10, y: 10, opacity: 0.8 })
+  .filter('vintage', 0.3);
+```
+
+### Use Cases
+
+**Logo/watermark:**
+```typescript
+const logo = await ArtistAPhoto.loadImage('brand-logo.png');
+editor.addImage({
+  image: logo,
+  x: canvas.width - logo.width - 20,
+  y: canvas.height - logo.height - 20,
+  opacity: 0.6
+});
+```
+
+**Photo collage:**
+```typescript
+const photo1 = await ArtistAPhoto.loadImage(file1);
+const photo2 = await ArtistAPhoto.loadImage(file2);
+
+editor
+  .addImage({ image: photo1, x: 0, y: 0, width: 300, height: 200 })
+  .addImage({ image: photo2, x: 310, y: 0, width: 300, height: 200 });
+```
+
+**Sticker with rotation:**
+```typescript
+const sticker = await ArtistAPhoto.loadImage('sticker.png');
+editor.addImage({
+  image: sticker,
+  x: 150,
+  y: 100,
+  width: 80,
+  height: 80,
+  rotation: 12
+});
+```
+
+---
+
 ## Undo/Redo
 
 ArtistAPhoto maintains a complete history of operations, allowing full undo/redo support.
@@ -698,6 +861,16 @@ Remove all operations and return to the original image.
 ```typescript
 editor.reset();
 ```
+
+### Destroy
+
+Release all resources held by the editor instance. Call this when you're done with an editor to prevent memory leaks, especially in SPAs.
+
+```typescript
+editor.destroy();
+```
+
+After calling `destroy()`, the editor instance should not be used again.
 
 ### Get History
 
@@ -752,11 +925,11 @@ const canvas = await editor.preview();
 document.body.appendChild(canvas);
 ```
 
-> **Note:** Preview never includes watermark, even in trial mode.
+> **Note:** `preview()` never includes watermark, even in trial mode. Use it for displaying intermediate results.
 
 ### To Canvas
 
-Alias for `preview()`.
+Export-ready canvas. Includes watermark in trial mode.
 
 ```typescript
 const canvas = await editor.toCanvas();
@@ -847,7 +1020,7 @@ import {
   ImageLoadError,
   InvalidCropError,
   InvalidDimensionsError
-} from 'artistaphoto';
+} from 'artistasdk';
 ```
 
 ### LicenseError
@@ -930,7 +1103,7 @@ import {
   ArtistAPhoto,
   LicenseError,
   ImageLoadError
-} from 'artistaphoto';
+} from 'artistasdk';
 
 async function editImage(file) {
   try {
@@ -985,13 +1158,16 @@ import {
   ExportFormat,
   CropOptions,
   ResizeOptions,
+  RotateOptions,
+  FlipDirection,
   TextOptions,
   ShapeOptions,
+  ImageOverlayOptions,
 
   // Info types
   LicenseInfo,
   LicenseConfig
-} from 'artistaphoto';
+} from 'artistasdk';
 ```
 
 ### Type Definitions
@@ -1077,7 +1253,7 @@ import {
   FilterType,
   ExportFormat,
   CropOptions
-} from 'artistaphoto';
+} from 'artistasdk';
 
 async function processImage(file: File): Promise<Blob> {
   const editor = await ArtistAPhoto.fromFile(file);
@@ -1287,7 +1463,8 @@ const editor = await ArtistAPhoto.fromFile(file);
 1. Resize the image early in the pipeline
 2. Process in smaller batches
 3. Use `reset()` to clear operations you no longer need
-4. Avoid keeping multiple editor instances
+4. Call `destroy()` when done with an editor instance
+5. Avoid keeping multiple editor instances
 
 ### Filters are slow
 
@@ -1319,4 +1496,4 @@ const editor = await ArtistAPhoto.fromFile(file);
 
 ---
 
-*Last updated: January 2025*
+*Last updated: May 2026*
